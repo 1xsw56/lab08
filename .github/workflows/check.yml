@@ -1,0 +1,21 @@
+name: Docker_check
+on:
+  push:
+    
+jobs:
+  Docker:
+      runs-on: ubuntu-latest
+      steps:
+
+        - uses: actions/checkout@v3
+
+        - name: build
+          shell: bash
+          run: | 
+            git submodule update --init --recursive
+            docker build -t builder .
+        - name: run
+          shell: bash
+          run: |
+            docker run --name=taskdock -v "$(pwd)/logs/:/home/logs/" builder
+            exit
